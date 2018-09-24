@@ -55108,13 +55108,6 @@ var routes = [{
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MessageFeed__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MessageFeed___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__MessageFeed__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MessageComposer__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MessageComposer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__MessageComposer__);
-//
-//
-//
 //
 //
 //
@@ -55128,335 +55121,75 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-
-
+/*import MessageFeed from './MessageFeed';
+import MessageComposer from './MessageComposer';*/
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: { MessageFeed: __WEBPACK_IMPORTED_MODULE_0__MessageFeed___default.a, MessageComposer: __WEBPACK_IMPORTED_MODULE_1__MessageComposer___default.a },
-  props: {
-    contact: {
-      type: Object,
-      default: null
-    },
-    userId: {
-      type: Number,
-      default: null
-    },
-    messages: {
-      type: Array,
-      default: null
-    },
-    unreadmessages: {
-      type: Array,
-      default: null
-    }
-  },
-  data: function data() {
-    return {
-      title: "Start Chatting",
-      newMessage: '',
-      receiver_id: '',
-      newRecievedMessage: ''
-    };
-  },
-
-  methods: {
-    sendMessage: function sendMessage() {
-      var app = this;
-      var receiver_id = app.$route.params.id;
-      var newMessage = app.newMessage;
-      if (newMessage == '' && receiver_id == '') {
-        return;
-      }
-      axios.post('/sendMessage', { receiver_id: receiver_id, message: newMessage }).then(function (response) {
-        console.log(app.newMessage);
-        app.newMessage = '';
-
-        Pusher.logToConsole = true;
-        var pusher = new Pusher('f4e14530aedbfaf9a062', {
-          cluster: 'ap2',
-          forceTLS: true
-        });
-
-        var channel = pusher.subscribe('my-channel');
-        channel.bind_global('my-event', function (data) {
-          app.newRecievedMessage = JSON.stringify(data.message);
-          //app.warningsContainer.push(message);
-        });
-      }).catch(function (error) {
-        app.newMessage = '';
-        console.log('Error Found');
-      });
-    }
-  } /*,
-    mounted(){
-    console.log("Hello");
-    Pusher.logToConsole = true;
-    var pusher = new Pusher('f4e14530aedbfaf9a062', {
-      cluster: 'ap2',
-      forceTLS: true
-    });
-    	var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
-    	console.log("Hello");
-      console.log(JSON.stringify(data.data.message.message));
-      alert(JSON.stringify(data.data.message.message));
-    });
-    }*/
-});
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(47)
-/* template */
-var __vue_template__ = __webpack_require__(48)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/MessageFeed.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9e907144", Component.options)
-  } else {
-    hotAPI.reload("data-v-9e907144", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 47 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
+	//components: { MessageFeed,MessageComposer },
 	props: {
 		contact: {
 			type: Object,
-			default: null /*,
-                 messages : {
-                 type: Array,
-                 default: []
-                 }*/
-		} },
-	mounted: function mounted() {
-		console.log("Hello Feed");
-	}
-});
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.contact
-    ? _c(
-        "ul",
-        [
-          _vm._v("\n\t\t/*"),
-          _vm._l(_vm.messages, function(message) {
-            return _c("li", [
-              _c("div", { staticClass: "text" }, [
-                _vm._v("\n\t\t\t\t" + _vm._s(message.text) + "\n\t\t\t")
-              ])
-            ])
-          }),
-          _vm._v("*/\n\t")
-        ],
-        2
-      )
-    : _vm._e()
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-9e907144", module.exports)
-  }
-}
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(50)
-/* template */
-var __vue_template__ = __webpack_require__(51)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/MessageComposer.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6cfdbde0", Component.options)
-  } else {
-    hotAPI.reload("data-v-6cfdbde0", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-	props: {
+			default: null
+		},
 		userId: {
-			type: Number
+			type: Number,
+			default: null
+		},
+		messages: {
+			type: Array,
+			default: null
+		},
+		unreadmessages: {
+			type: Array,
+			default: null
 		}
 	},
 	data: function data() {
 		return {
-			message: ''
+			title: "Start Chatting",
+			newMessage: '',
+			receiver_id: '',
+			newRecievedMessage: ''
 		};
 	},
 
 	methods: {
-		send: function send() {
-			if (this.message == '') {
+		sendMessage: function sendMessage() {
+			var app = this;
+			var receiver_id = app.$route.params.id;
+			var newMessage = app.newMessage;
+			if (newMessage == '' && receiver_id == '') {
 				return;
 			}
-			this.$emit('send', this.message);
-			this.message = '';
+			axios.post('/sendMessage', { receiver_id: receiver_id, message: newMessage }).then(function (response) {
+				app.newRecievedMessage = app.newMessage;
+				app.newMessage = '';
+
+				Pusher.logToConsole = true;
+				var pusher = new Pusher('f4e14530aedbfaf9a062', {
+					cluster: 'ap2',
+					forceTLS: true
+				});
+
+				var channel = pusher.subscribe('my-channel');
+				channel.bind('my-event', function (data) {
+					JSON.stringify(data.message);
+				});
+			}).catch(function (error) {
+				app.newMessage = '';
+				console.log('Error Found');
+			});
 		}
-	},
-	mounted: function mounted() {
-		console.log("Hello Composer");
 	}
 });
 
 /***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "composer" }, [
-    _c("textarea", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.message,
-          expression: "message"
-        }
-      ],
-      attrs: { placeholde: "message.." },
-      domProps: { value: _vm.message },
-      on: {
-        keydown: function($event) {
-          if (
-            !("button" in $event) &&
-            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-          ) {
-            return null
-          }
-          return _vm.send($event)
-        },
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.message = $event.target.value
-        }
-      }
-    })
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6cfdbde0", module.exports)
-  }
-}
-
-/***/ }),
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -55469,7 +55202,7 @@ var render = function() {
     { staticStyle: { float: "right", "margin-top": "-82px" } },
     [
       _c("div", { staticClass: "conversation" }, [
-        _vm._v("\n\t\t" + _vm._s(_vm.title) + " \n\t\t")
+        _vm._v("\n\t\t" + _vm._s(_vm.title) + " \n\t")
       ]),
       _vm._v(" "),
       _vm._l(_vm.messages, function(message) {
@@ -55655,8 +55388,6 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Conversation__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Conversation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Conversation__);
-//
-//
 //
 //
 //
