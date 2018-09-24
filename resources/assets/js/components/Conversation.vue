@@ -7,6 +7,7 @@
 		</div>
 		<div v-for="message in messages" ><p>{{ message.message }}</p></div>
 		<div v-for="unread in unreadmessages" ><p>{{ unread.message }}</p></div>
+		<div>{{ newRecievedMessage }}</div>
 		<input v-model="newMessage" placeholder="message..">
 		<!-- <textarea v-model="newMessage" placeholde="message.."></textarea> -->
 		<button v-on:click = "sendMessage">Send</button>
@@ -16,10 +17,7 @@
 import MessageFeed from './MessageFeed';
 import MessageComposer from './MessageComposer';
 
-import Pusher from 'pusher-js';
-
 export default {
-	name:'pusher-events',
 	components: { MessageFeed,MessageComposer },
 	props :{
 		contact : {
@@ -37,37 +35,15 @@ export default {
 		unreadmessages : {
 			type: Array,
 			default: null
-		},
+		}
 	},
-	props:['api_key','api_cluster', 'channel_data'],
 	data() {
 		return {
 			title: "Start Chatting",
 			newMessage: '',
 			receiver_id: '',
-			pusher: null,
-			channel: null
-			/*channels:{},
-			form:{}*/
+			newRecievedMessage: ''
 		}
-	},
-	beforeMount(){
-	   this.initPusher()
-	   this.bindConnections()
-	},
-	created	() {
-		this.pusher = new Pusher(env(PUSHER_APP_KEY), {
-			encrypted: true,
-			cluster: env(PUSHER_APP_CLUSTER)
-		})
-		let that = this;
-		this.channel = this.pusher.subscriber('my-channel') 
-		this.channel.bind('my-event', function(data) {
-			that.$emit('my-event',data)
-		})
-		this.$on('my-event', function(chatMessage){
-			this.myEvent(chatMessage)
-		})
 	},
 	methods: {
 		sendMessage() {
@@ -79,22 +55,42 @@ export default {
 			}
             axios.post('/sendMessage',  {receiver_id: receiver_id, message: newMessage}) 
                 .then(response => {
-                    console.log("Success");
-                    //this.fetchMessage();
-                    app.newMessage = '';                        
+                    console.log(app.newMessage);
+                    app.newMessage = ''; 
+
+                    Pusher.logToConsole = true;
+                	var pusher = new Pusher('f4e14530aedbfaf9a062', {
+                	  cluster: 'ap2',
+                	  forceTLS: true
+                	});
+
+                	var channel = pusher.subscribe('my-channel'); 
+        	    	channel.bind_global('my-event', function(data) {
+        	    		app.newRecievedMessage = JSON.stringify(data.message);
+        	    		//app.warningsContainer.push(message);
+        	    	});                    
                 })
                 .catch(error => {
                 	app.newMessage = '';
                     console.log('Error Found')
                 })
         }
-    },
+    }/*,
     mounted(){
-    	pusher.bind('my-event', function () {
-    		console.log("Hello");
-    		
+    	console.log("Hello");
+    	Pusher.logToConsole = true;
+    	var pusher = new Pusher('f4e14530aedbfaf9a062', {
+    	  cluster: 'ap2',
+    	  forceTLS: true
     	});
-    }
+
+    	var channel = pusher.subscribe('my-channel');
+    	channel.bind('my-event', function(data) {
+    		console.log("Hello");
+    	  console.log(JSON.stringify(data.data.message.message));
+    	  alert(JSON.stringify(data.data.message.message));
+    	});
+    }*/
 }
 
 </script>

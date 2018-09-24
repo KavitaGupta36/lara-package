@@ -12,12 +12,12 @@
     </script>
 </head>
 <body>
-	<h3 style="align-items: center; margin-left: 600px;">Chat Box</h3>
+	<div class="panel-body" id="app">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-10 col-sm-10 col-xs-7">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+			<h3 style="align-items: center; margin-left: 600px;">Chat Box</h3>
 				<div class="left">
-					<div class="panel-body" id="app">
 						<!-- <message-component></message-component> -->
 						<chat-form></chat-form>
 					</div>

@@ -27,8 +27,8 @@ class ChatController extends Controller
             'receiver_id' => $request->receiver_id,
             'message' => $request->message,
         ]);
-        /*Pusher::trigger('my-channel', 'my-event', $newMessage);*/
-        event(new MessageSent($newMessage));
+        Pusher::trigger('my-channel', 'my-event', $newMessage);
+        //event(new MessageSent($newMessage));
     }
 
     public function message(){

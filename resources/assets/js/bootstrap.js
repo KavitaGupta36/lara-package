@@ -47,3 +47,11 @@ window.Echo.channel('my-channel')
     console.log('Got event...');
     console.log(e);
 });
+
+/*Vue.use(require('vue-pusher'), {
+    api_key: 'f4e14530aedbfaf9a062',
+    options: {
+        cluster: 'ap2',
+        encrypted: true,
+    }
+});*/

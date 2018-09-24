@@ -1,14 +1,16 @@
 <template>
 	<div>
 		<div class="contact-list" style="margin-left: 120px;">
-			<ul>
-				<li v-for="(contact, index) in contacts" :key="contact.id" 
-				@click = "selectContact(contact.id, contact)" :class="{ 'selected': index}">
-					<router-link :to="{name: 'messages', params: {id: contact.id}}">
-						<a href="/#" >{{ contact.id }} - {{ contact.name }}</a>
-					</router-link>
-				</li>
-			</ul>
+			<!-- <div class="col-md-6 col-sm-6 col-xs-6"> -->
+				<ul>
+					<li v-for="(contact, index) in contacts" :key="contact.id" 
+					@click = "selectContact(contact.id, contact)" :class="{ 'selected': index}">
+						<router-link :to="{name: 'messages', params: {id: contact.id}}">
+							<a href="/#" >{{ contact.id }} - {{ contact.name }}</a>
+						</router-link>
+					</li>
+				</ul>
+			<!-- </div> -->
 		</div>
 		<Conversation :userId="user_id" :messages="allMessages" :unreadmessages="unreadMessages"/>
 	</div>

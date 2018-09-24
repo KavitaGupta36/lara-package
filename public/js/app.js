@@ -22550,6 +22550,14 @@ window.Echo.channel('my-channel').listen('my-event', function (e) {
     console.log(e);
 });
 
+/*Vue.use(require('vue-pusher'), {
+    api_key: 'f4e14530aedbfaf9a062',
+    options: {
+        cluster: 'ap2',
+        encrypted: true,
+    }
+});*/
+
 /***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -55104,12 +55112,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MessageFeed___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__MessageFeed__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MessageComposer__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MessageComposer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__MessageComposer__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pusher_js__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pusher_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_pusher_js__);
-var _name$components$prop;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
 //
 //
 //
@@ -55128,77 +55131,79 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: { MessageFeed: __WEBPACK_IMPORTED_MODULE_0__MessageFeed___default.a, MessageComposer: __WEBPACK_IMPORTED_MODULE_1__MessageComposer___default.a },
+  props: {
+    contact: {
+      type: Object,
+      default: null
+    },
+    userId: {
+      type: Number,
+      default: null
+    },
+    messages: {
+      type: Array,
+      default: null
+    },
+    unreadmessages: {
+      type: Array,
+      default: null
+    }
+  },
+  data: function data() {
+    return {
+      title: "Start Chatting",
+      newMessage: '',
+      receiver_id: '',
+      newRecievedMessage: ''
+    };
+  },
 
+  methods: {
+    sendMessage: function sendMessage() {
+      var app = this;
+      var receiver_id = app.$route.params.id;
+      var newMessage = app.newMessage;
+      if (newMessage == '' && receiver_id == '') {
+        return;
+      }
+      axios.post('/sendMessage', { receiver_id: receiver_id, message: newMessage }).then(function (response) {
+        console.log(app.newMessage);
+        app.newMessage = '';
 
-/* harmony default export */ __webpack_exports__["default"] = (_name$components$prop = {
-	name: 'pusher-events',
-	components: { MessageFeed: __WEBPACK_IMPORTED_MODULE_0__MessageFeed___default.a, MessageComposer: __WEBPACK_IMPORTED_MODULE_1__MessageComposer___default.a },
-	props: {
-		contact: {
-			type: Object,
-			default: null
-		},
-		userId: {
-			type: Number,
-			default: null
-		},
-		messages: {
-			type: Array,
-			default: null
-		},
-		unreadmessages: {
-			type: Array,
-			default: null
-		}
-	}
-}, _defineProperty(_name$components$prop, 'props', ['api_key', 'api_cluster', 'channel_data']), _defineProperty(_name$components$prop, 'data', function data() {
-	return {
-		title: "Start Chatting",
-		newMessage: '',
-		receiver_id: '',
-		pusher: null,
-		channel: null
-		/*channels:{},
-  form:{}*/
-	};
-}), _defineProperty(_name$components$prop, 'beforeMount', function beforeMount() {
-	this.initPusher();
-	this.bindConnections();
-}), _defineProperty(_name$components$prop, 'created', function created() {
-	this.pusher = new __WEBPACK_IMPORTED_MODULE_2_pusher_js___default.a(env(PUSHER_APP_KEY), {
-		encrypted: true,
-		cluster: env(PUSHER_APP_CLUSTER)
-	});
-	var that = this;
-	this.channel = this.pusher.subscriber('my-channel');
-	this.channel.bind('my-event', function (data) {
-		that.$emit('my-event', data);
-	});
-	this.$on('my-event', function (chatMessage) {
-		this.myEvent(chatMessage);
-	});
-}), _defineProperty(_name$components$prop, 'methods', {
-	sendMessage: function sendMessage() {
-		var app = this;
-		var receiver_id = app.$route.params.id;
-		var newMessage = app.newMessage;
-		if (newMessage == '' && receiver_id == '') {
-			return;
-		}
-		axios.post('/sendMessage', { receiver_id: receiver_id, message: newMessage }).then(function (response) {
-			console.log("Success");
-			//this.fetchMessage();
-			app.newMessage = '';
-		}).catch(function (error) {
-			app.newMessage = '';
-			console.log('Error Found');
-		});
-	}
-}), _defineProperty(_name$components$prop, 'mounted', function mounted() {
-	pusher.bind('my-event', function () {
-		console.log("Hello");
-	});
-}), _name$components$prop);
+        Pusher.logToConsole = true;
+        var pusher = new Pusher('f4e14530aedbfaf9a062', {
+          cluster: 'ap2',
+          forceTLS: true
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind_global('my-event', function (data) {
+          app.newRecievedMessage = JSON.stringify(data.message);
+          //app.warningsContainer.push(message);
+        });
+      }).catch(function (error) {
+        app.newMessage = '';
+        console.log('Error Found');
+      });
+    }
+  } /*,
+    mounted(){
+    console.log("Hello");
+    Pusher.logToConsole = true;
+    var pusher = new Pusher('f4e14530aedbfaf9a062', {
+      cluster: 'ap2',
+      forceTLS: true
+    });
+    	var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+    	console.log("Hello");
+      console.log(JSON.stringify(data.data.message.message));
+      alert(JSON.stringify(data.data.message.message));
+    });
+    }*/
+});
 
 /***/ }),
 /* 46 */
@@ -55475,6 +55480,8 @@ var render = function() {
         return _c("div", [_c("p", [_vm._v(_vm._s(unread.message))])])
       }),
       _vm._v(" "),
+      _c("div", [_vm._v(_vm._s(_vm.newRecievedMessage))]),
+      _vm._v(" "),
       _c("input", {
         directives: [
           {
@@ -55571,6 +55578,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -55646,6 +55655,8 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Conversation__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Conversation___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Conversation__);
+//
+//
 //
 //
 //
@@ -55784,12 +55795,14 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "chat-form" },
-    [_c("ContactList", { attrs: { contacts: _vm.contacts } })],
-    1
-  )
+  return _c("div", { staticClass: "chat-form" }, [
+    _c(
+      "div",
+      { staticClass: "col-md-12 col-sm-12 col-xs-12" },
+      [_c("ContactList", { attrs: { contacts: _vm.contacts } })],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
